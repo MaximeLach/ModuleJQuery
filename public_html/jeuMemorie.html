@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Jeu du Memorie</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="JS/jquery-3.1.1.js" type="text/javascript"></script>
+        <script type="text/javascript">
+        var nombreEssai = 0;
+        var choixCase1="vide";
+        var choixCase2="vide";
+        var compteurCase;
+        function clique(event){
+            
+        
+        event.target.style = "background-color: "+ ("#"+ (event.target.id).substring(1));
+        if(choixCase1 != "vide" && choixCase2!="vide"){        
+                $('#'+choixCase1).css('background-color', '#ffffff');
+                $('#'+choixCase2).css('background-color','#ffffff');
+                choixCase1 = "vide";
+                choixCase2 = "vide";
+                
+            }
+        
+        if(choixCase1 != event.target.id){
+            
+        
+        if(choixCase1 == "vide"){
+                choixCase1=event.target.id;
+            }
+            else{ 
+                
+                if((choixCase1).substring(1) == (event.target.id).substring(1)){
+                    $('#'+event.target.id).attr('disabled','disabled');
+                    $('#'+event.target.id).attr('value', 'X');
+                    $('#'+choixCase1).attr('disabled','disabled');
+                    $('#'+choixCase1).attr('value', 'X');
+                    compteurCase-= 2;
+                    choixCase1 = "vide";
+                    choixCase2 = "vide"; 
+                    nombreEssai ++;
+                }
+                else {
+                    choixCase2 = event.target.id;
+                    nombreEssai ++;
+                }
+                
+            }
+        }
+            
+        
+        if(compteurCase == 0){
+            alert("Gagné en "+nombreEssai+" essais !")
+        }
+        
+        }
+        
+    function debut(){
+            //Choix du nommbre de case
+            do {
+                var nombreCase = prompt("Veuillez saisir un nombre de cases de côtés(paires de 2 à 6) : ");
+                if (nombreCase < 2 | nombreCase > 20 | nombreCase % 2 != 0) {
+                    alert("Veuillez recommencer !!!");
+                }
+            } while (nombreCase < 2 | nombreCase > 20 | nombreCase % 2 != 0);
+            compteurCase = nombreCase * nombreCase;
+            var tab = [nombreCase];
+            for (var indiceX = 0; indiceX < nombreCase; indiceX++) {
+                    tab[indiceX] = [];        
+                }
+            var tabEtat = [nombreCase];
+            for (var indiceX = 0; indiceX < nombreCase; indiceX++) {
+                    tabEtat[indiceX] = [];        
+                }
+            
+            //Initialisation des tableaux
+            for (var indiceX = 0; indiceX < nombreCase; indiceX++) {
+                for (var indiceY = 0; indiceY < nombreCase; indiceY++) {
+                    tab[indiceX][indiceY] = '0';
+                    tabEtat[indiceX][indiceY] = true;
+                }
+            }
+            
+            //Remplissage tableau
+            for (var lettre = 0; lettre < nombreCase*nombreCase/2; lettre++) {
+                for (var nombreLettre = 1; nombreLettre <= 2; nombreLettre++) {
+                    do {
+                        var ligne = Math.round(Math.random()*(tab.length-1));
+                        var colonne = Math.round(Math.random()*(tab.length-1));
+                    } while (verifierCase(tab, ligne, colonne) == true);
+                    tab[ligne][colonne] = (nombreLettre).toString() + lettre;
+                }
+            }
+            
+            creerTableau(tab);
+            
+        }       
+        function verifierCase(tab,ligne,colonne) {
+           if (tab[ligne][colonne] == '0') {
+                return false;
+            } else {
+                return true;
+                }    
+            }
+        function creerTableau(tab) {
+            $.getJSON("JSON/couleurs.json", function(data){
+                $('#tableau').text("");
+                $('#tableau').append("<table>");
+                for (var indiceX = 0; indiceX < tab[0].length; indiceX++) {        
+                    $('#tableau').append("<tr>");
+                    for (var indiceY = 0; indiceY < tab[0].length; indiceY++) {
+                        $('#tableau').append("<td><input style='background-color : #ffffff' type='button' value = '  ' id='" + (tab[indiceX][indiceY]).substring(0,1) + data.couleurs[(tab[indiceX][indiceY]).substring(1)]+"' onclick='clique(event);'/></td>");
+                    }
+                    $('#tableau').append("</tr>"); 
+                }
+                $('#tableau').append("</table>");
+            });
+        } 
+        </script>
+    </head>
+    <body>
+        <h1>Jeu du memory</h1>
+        <div>youpi!</div>
+        <input type="button" value='Nouvelle partie' onclick="debut();"/>
+        <div id="tableau">Tableau</div>
+    </body>
+</html>
