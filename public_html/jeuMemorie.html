@@ -16,8 +16,6 @@ and open the template in the editor.
         var choixCase2="vide";
         var compteurCase;
         function clique(event){
-            
-        
         event.target.style = "background-color: "+ ("#"+ (event.target.id).substring(1));
         if(choixCase1 != "vide" && choixCase2!="vide"){        
                 $('#'+choixCase1).css('background-color', '#ffffff');
@@ -26,10 +24,8 @@ and open the template in the editor.
                 choixCase2 = "vide";
                 
             }
-        
         if(choixCase1 != event.target.id){
-            
-        
+
         if(choixCase1 == "vide"){
                 choixCase1=event.target.id;
             }
@@ -48,18 +44,15 @@ and open the template in the editor.
                 else {
                     choixCase2 = event.target.id;
                     nombreEssai ++;
-                }
-                
+                }  
             }
         }
-            
-        
+ 
         if(compteurCase == 0){
             alert("Gagné en "+nombreEssai+" essais !")
         }
         
-        }
-        
+        }    
     function debut(){
             //Choix du nommbre de case
             do {
@@ -77,7 +70,6 @@ and open the template in the editor.
             for (var indiceX = 0; indiceX < nombreCase; indiceX++) {
                     tabEtat[indiceX] = [];        
                 }
-            
             //Initialisation des tableaux
             for (var indiceX = 0; indiceX < nombreCase; indiceX++) {
                 for (var indiceY = 0; indiceY < nombreCase; indiceY++) {
@@ -85,7 +77,6 @@ and open the template in the editor.
                     tabEtat[indiceX][indiceY] = true;
                 }
             }
-            
             //Remplissage tableau
             for (var lettre = 0; lettre < nombreCase*nombreCase/2; lettre++) {
                 for (var nombreLettre = 1; nombreLettre <= 2; nombreLettre++) {
@@ -95,10 +86,8 @@ and open the template in the editor.
                     } while (verifierCase(tab, ligne, colonne) == true);
                     tab[ligne][colonne] = (nombreLettre).toString() + lettre;
                 }
-            }
-            
-            creerTableau(tab);
-            
+            }   
+            creerTableau(tab);          
         }       
         function verifierCase(tab,ligne,colonne) {
            if (tab[ligne][colonne] == '0') {
